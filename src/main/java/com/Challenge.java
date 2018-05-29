@@ -1,6 +1,5 @@
 package main.java.com;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -20,13 +19,18 @@ public class Challenge {
 	
 	private Util myUtil = new Util();
 	
+	/**
+	 * Converts "scan_detail" from nest JSON into a List structure
+	 * @param jsonString String
+	 * @return List<Result> - returns a list representation of the nested object structure
+	 */
 	public List<Result> getResultList(String jsonString){
 		List<Result> resultList = null;
 		//get "scan_result" object and set as new node to extra info from nested structure
-		JsonNode scanResults = this.getJsonNode(jsonString, "scan_results");
+		JsonNode scanResults = myUtil.getJsonNode(jsonString, "scan_results");
 		
 		//get "scan_detail" object
-		JsonNode scanDetail = this.getJsonNode(scanResults, "scan_details");
+		JsonNode scanDetail = myUtil.getJsonNode(scanResults, "scan_details");
 		
 		//parse the scan_detail object into a list of individual result detail
 		resultList = new ArrayList<Result>();
@@ -43,33 +47,15 @@ public class Challenge {
 		return resultList;
 	}
 	
-	
-	
-	public JsonNode getJsonNode(String jsonStr, String key) {
-		JsonNode node = null;
-		try {
-			node = new ObjectMapper().readTree(jsonStr);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return getJsonNode(node, key);
-	}
-	
-	private JsonNode getJsonNode(JsonNode curNode, String key) {
-		return curNode.get(key);
-	}
-	
-	public boolean containsApiError(String responseString) {
-		Map<String, Object> result = myUtil.getResultMap(responseString);
-		
-		if(result.containsKey("error")) {	
-			//handle api error message
-		}
-		return false;
-	}
 
+	
+	/**
+	 * Extract "scan_all_result_a" from the response body
+	 * @param resultJsonString String
+	 * @return String - the value of "scan_all_result_a" with in the response body
+	 */
 	public String getOverallStatus(String resultJsonString) {
-		JsonNode scanResult = this.getJsonNode(resultJsonString, "scan_results");
+		JsonNode scanResult = myUtil.getJsonNode(resultJsonString, "scan_results");
 		return scanResult.get("scan_all_result_a").toString();
 	}
 }

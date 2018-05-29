@@ -58,42 +58,37 @@ public class App {
 		Map<String, Object> lookupResult = myUtil.getResultMap(resultJsonString);
 
 		
-		
-		//if(myChallenge.containsApiError(resultJsonString) == false) {
-			//hash lookup could either return hash# not found, error, or scan result as the response
-			if(lookupResult.get(fileHashValue)!=null) {
-				
-				//upload the file
-				resultJsonString = apiController.uploadFile(file);
-				Map<String, Object> uploadResult = myUtil.getResultMap(resultJsonString);
-				String fileKey = uploadResult.get("data_id").toString();
-				
-				//continue check for the result
-				//if it was a server application, i would move the polling/checking for completion
-				//into a separate method and have it run based on a Cron Job.
-				boolean scanCompleted = false;
-				while(!scanCompleted) {
-					Thread.sleep(5000);
-					resultJsonString = apiController.resultLookup(Challenge.fileId, fileKey);
-					JsonNode scanResult = myChallenge.getJsonNode(resultJsonString, "scan_results");
-					scanCompleted = scanResult.get("progress_percentage").asInt() == 100;
-				}
+		//hash lookup could either return hash# not found, error, or scan result as the response
+		if(lookupResult.get(fileHashValue)!=null) {
+			
+			//upload the file
+			resultJsonString = apiController.uploadFile(file);
+			Map<String, Object> uploadResult = myUtil.getResultMap(resultJsonString);
+			String fileKey = uploadResult.get("data_id").toString();
+			
+			//continue check for the result
+			boolean scanCompleted = false;
+			while(!scanCompleted) {
+				Thread.sleep(5000);
+				resultJsonString = apiController.resultLookup(Challenge.fileId, fileKey);
+				JsonNode scanResult = myUtil.getJsonNode(resultJsonString, "scan_results");
+				scanCompleted = scanResult.get("progress_percentage").asInt() == 100;
 			}
-			
-			
-			String overallStatus = myChallenge.getOverallStatus(resultJsonString);
-			
-			StringBuilder header = new StringBuilder();
-			header.append("filename: ");
-			header.append(fileName);
-			header.append("\n");
-			header.append("overall_status: ");
-			header.append(overallStatus);
-			header.append("\n");
-			
-			List<Result> resultList = myChallenge.getResultList(resultJsonString);
-			myUtil.printResult(header.toString(), resultList);	
-		//}
+		}
+		
+		
+		String overallStatus = myChallenge.getOverallStatus(resultJsonString);
+		
+		StringBuilder header = new StringBuilder();
+		header.append("filename: ");
+		header.append(fileName);
+		header.append("\n");
+		header.append("overall_status: ");
+		header.append(overallStatus);
+		header.append("\n");
+		
+		List<Result> resultList = myChallenge.getResultList(resultJsonString);
+		myUtil.printResult(header.toString(), resultList);	
 		
 	}
 }

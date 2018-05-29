@@ -26,6 +26,12 @@ public class ApiController {
 	}
 		
 	
+	/**
+	 * http GET request to retrieve scan result by using file hash or assigned id
+	 * @param type Challenge.fileHash | Challenge.fileId
+	 * @param value the unique lookup key
+	 * @return Response body of the GET request as a JSON String
+	 */
 	public String resultLookup(String type, String value) {
     	
 		StringBuffer result = new StringBuffer();
@@ -51,6 +57,11 @@ public class ApiController {
 		return result.toString();
     }
 	
+	/**
+	 * http POST request to upload the file
+	 * @param file Name of the file to be uploaded
+	 * @return Response body of the POST request as a JSON String
+	 */
 	public String uploadFile(File file) {
     	
 		StringBuffer result = new StringBuffer();
