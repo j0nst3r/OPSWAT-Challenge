@@ -6,7 +6,7 @@ Using Maven for dependencies, build, package
 ## Setup/Build/Run
 make sure Java and Maven are installed on machine and envionrment variables are set.
 
-update personal API_KEY in src/main/resources/application.properties file
+update personal API_KEY in application.properties located in `src/main/resources`
 
 build/package: `mvn clean install`
 
