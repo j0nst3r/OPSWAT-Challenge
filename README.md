@@ -10,6 +10,8 @@ update personal API_KEY in src/main/resources/application.properties file
 
 build/package: `mvn clean install`
 
-run: `java -jar target\Challenge.jar testFile1.txt`
+run: `java -jar target\Challenge.jar <file_name>`
+
+<file_name> to be replaced with relative file path from project root folder, or absolute path.
 
 
