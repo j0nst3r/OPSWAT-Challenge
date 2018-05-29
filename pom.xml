@@ -72,6 +72,7 @@
             <artifactId>maven-jar-plugin</artifactId>
             <version>2.4</version>
             <configuration>
+				<finalName>Challenge</finalName>
                 <archive>
                     <manifest>
                         <mainClass>main.java.com.App</mainClass>
