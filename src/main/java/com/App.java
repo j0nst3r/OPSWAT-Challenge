@@ -57,12 +57,14 @@ public class App {
 		String resultJsonString = apiController.resultLookup(Challenge.fileHash,fileHashValue);
 		Map<String, Object> lookupResult = myUtil.getResultMap(resultJsonString);
 
+		myUtil.checkForApiError(resultJsonString);
 		
 		//hash lookup could either return hash# not found, error, or scan result as the response
 		if(lookupResult.get(fileHashValue)!=null) {
 			
 			//upload the file
 			resultJsonString = apiController.uploadFile(file);
+			myUtil.checkForApiError(resultJsonString);
 			Map<String, Object> uploadResult = myUtil.getResultMap(resultJsonString);
 			String fileKey = uploadResult.get("data_id").toString();
 			
@@ -71,9 +73,11 @@ public class App {
 			while(!scanCompleted) {
 				Thread.sleep(5000);
 				resultJsonString = apiController.resultLookup(Challenge.fileId, fileKey);
+				myUtil.checkForApiError(resultJsonString);
 				JsonNode scanResult = myUtil.getJsonNode(resultJsonString, "scan_results");
 				scanCompleted = scanResult.get("progress_percentage").asInt() == 100;
 			}
+			
 		}
 		
 		

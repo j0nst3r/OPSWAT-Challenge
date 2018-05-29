@@ -88,7 +88,7 @@ public class Util {
 	 * @return boolean - true-> has error
 	 * 					 false-> no error
 	 */
-	public boolean containsApiError(String responseString) {
+	public boolean checkForApiError(String responseString) {
 		Map<String, Object> result = getResultMap(responseString);
 		
 		if(result.containsKey("error")) {	

@@ -90,7 +90,6 @@ public class ApiController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-    	
     	return result.toString();
     }
 }
